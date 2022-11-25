@@ -1,7 +1,7 @@
 ext.deps = [
         'module'        : [
-//                'domain'     : project(":domain"),
-//                'data'       : project(":data"),
+                'domain'     : project(":domain"),
+                'data'       : project(":data"),
                 'network'    : project(':network'),
                 'common'     : project(":common")
         ],

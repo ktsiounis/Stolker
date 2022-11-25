@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.example.stolker'
-    compileSdk 32
+    compileSdk versions.compileSdk
 
     defaultConfig {
         applicationId "com.example.stolker"
-        minSdk 23
-        targetSdk 32
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
         versionCode 1
         versionName "1.0"
 
@@ -30,6 +30,8 @@ android {
             buildConfigField "String", "apiBaseUrl", localProperties['mockBaseUrl']
             buildConfigField "String", "rtfBaseUrl", localProperties['mockBaseUrl']
 
+            signingConfig signingConfigs.debug
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -40,6 +42,8 @@ android {
 
             buildConfigField "String", "apiBaseUrl", localProperties['betaApiBaseUrl']
             buildConfigField "String", "rtfBaseUrl", localProperties['betaRtfBaseUrl']
+
+            signingConfig signingConfigs.debug
 
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -59,6 +63,8 @@ android {
 
 dependencies {
     implementation deps.module.common
+    implementation deps.module.domain
+    implementation deps.module.data
 
     implementation deps.core_ktx
     implementation deps.ui

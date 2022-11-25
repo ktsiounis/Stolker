@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/ProductsFragment">
+
+    <fragment
+        android:id="@+id/ProductsFragment"
+        android:name="com.example.stolker.ui.fragments.ProductsFragment"
+        android:label="@string/products_fragment_label"
+        tools:layout="@layout/fragment_products">
+
+        <action
+            android:id="@+id/action_ProductsFragment_to_ProductDetailsFragment"
+            app:destination="@id/ProductDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ProductDetailsFragment"
+        android:name="com.example.stolker.ui.fragments.ProductDetailsFragment"
+        android:label="@string/product_details_fragment_label"
+        tools:layout="@layout/fragment_product_details">
+
+        <action
+            android:id="@+id/action_ProductDetailsFragment_to_ProductsFragment"
+            app:destination="@id/ProductsFragment" />
+    </fragment>
+</navigation>

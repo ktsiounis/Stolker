@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Stolker</string>
+    <string name="action_settings">Settings</string>
+    <string name="products_fragment_label">Available Products</string>
+    <string name="product_details_fragment_label">Details</string>
+    <string name="no_available_products_message">There are no available products right now. You can try search for a product manually though!</string>
+    <string name="search_product_manually_fab_content_description">Search Product Manually</string>
+</resources>

@@ -4,16 +4,8 @@ apply plugin: 'kotlin-android'
 apply from: "${rootProject.projectDir}/config/gradle/build_scripts/android-lib.gradle"
 
 dependencies {
-    implementation deps.module.domain
-    implementation deps.module.network
     implementation deps.module.common
 
-    implementation deps.networking
     implementation deps.coroutines
     implementation deps.di.koin
-
-    testImplementation deps.test.junit
-    testImplementation deps.test.mockk
-    testImplementation deps.test.coroutines
-    testImplementation deps.test.kotest
 }
