@@ -1,9 +1,11 @@
 package com.example.stolker.ui.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.common.Result
 import com.example.domain.models.Product
+import com.example.domain.models.SocketMessage
 import com.example.domain.usecases.ProductDetailsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -29,9 +31,34 @@ class MainViewModel(
                 .collect {
                     when(it) {
                         is Result.Success ->_uiState.value = ProductsUiState.Success(it.value)
-                        is Result.Error -> _uiState.value = ProductsUiState.Error(it?.message ?: generalErrorMessage)
+                        is Result.Error -> _uiState.value = ProductsUiState.Error(it.message ?: generalErrorMessage)
                     }
                 }
+        }
+    }
+
+    fun startSocketForProduct(productId: String) {
+        viewModelScope.launch {
+            productDetailsUseCase
+                .startSocket()
+                .collect {
+                    when(it) {
+                        is SocketMessage.ProductUpdate -> Log.d("MainViewModel", it.currentPrice ?: "")
+                        SocketMessage.SocketConnected -> {
+                            Log.d("MainViewModel", "Connected!")
+                            productDetailsUseCase.subscribeTo(productId)
+                        }
+                        is SocketMessage.SocketConnectionFailed -> Log.d("MainViewModel", "Connection Failed")
+                        SocketMessage.Unknown -> Log.d("MainViewModel", "Unknown message received")
+                    }
+                }
+        }
+    }
+
+    fun closeSocketForProduct(productId: String) {
+        with(productDetailsUseCase) {
+            unsubscribeFrom(productId)
+            closeSocket()
         }
     }
 

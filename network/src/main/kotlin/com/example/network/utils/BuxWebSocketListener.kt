@@ -1,7 +1,6 @@
 package com.example.network.utils
 
 import android.util.Log
-import com.example.network.WebSocketProvider.Companion.NORMAL_CLOSURE_STATUS
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
@@ -21,16 +20,13 @@ class BuxWebSocketListener : WebSocketListener() {
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         GlobalScope.launch {
+            Log.d("BuxWebSocketListener", text)
             socketEventChannel.send(SocketUpdate(text))
         }
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        GlobalScope.launch {
-            socketEventChannel.send(SocketUpdate(text = reason))
-        }
-        webSocket.close(NORMAL_CLOSURE_STATUS, null)
-        socketEventChannel.close()
+        Log.d("BuxWebSocketListener", "$code - $reason")
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {

@@ -12,4 +12,12 @@ class ProductDetailsUseCase(
 
     suspend fun getProductDetails(id: String) = restRepository.getProductDetails(id)
 
+    suspend fun startSocket() = webSocketRepository.startSocket()
+
+    fun closeSocket() = webSocketRepository.closeSocket()
+
+    fun subscribeTo(productId: String) = webSocketRepository.subscribeTo(productId)
+
+    fun unsubscribeFrom(productId: String) = webSocketRepository.unsubscribeFrom(productId)
+
 }
