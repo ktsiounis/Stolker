@@ -1,0 +1,32 @@
+apply from: "${rootProject.projectDir}/config/gradle/build_scripts/android.gradle"
+
+android {
+    buildTypes {
+
+        def localPropertiesFile = rootProject.file("local.properties")
+        def localProperties = new Properties()
+        localProperties.load(new FileInputStream(localPropertiesFile))
+
+        mock {
+            buildConfigField "String", "betaApiAuthToken", localProperties['betaApiAuthToken']
+            buildConfigField "String", "betaRtfAuthToken", localProperties['betaRtfAuthToken']
+
+            buildConfigField "String", "apiBaseUrl", localProperties['mockBaseUrl']
+            buildConfigField "String", "rtfBaseUrl", localProperties['mockBaseUrl']
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        beta {
+            buildConfigField "String", "betaApiAuthToken", localProperties['betaApiAuthToken']
+            buildConfigField "String", "betaRtfAuthToken", localProperties['betaRtfAuthToken']
+
+            buildConfigField "String", "apiBaseUrl", localProperties['betaApiBaseUrl']
+            buildConfigField "String", "rtfBaseUrl", localProperties['betaRtfBaseUrl']
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}

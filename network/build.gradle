@@ -1,0 +1,11 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+apply from: "${rootProject.projectDir}/config/gradle/build_scripts/android-lib.gradle"
+
+dependencies {
+    implementation deps.module.common
+
+    implementation deps.networking
+    implementation deps.coroutines
+}

@@ -1,0 +1,72 @@
+ext.deps = [
+        'module'        : [
+//                'domain'     : project(":domain"),
+//                'data'       : project(":data"),
+                'network'    : project(':network'),
+                'common'     : project(":common")
+        ],
+
+        'test'          : [
+                'junit'      : [
+                        "junit:junit:$versions.junit4",
+                        "org.junit.jupiter:junit-jupiter-api:$versions.junit5"
+                ],
+
+                'kotest'     : [
+                        "io.kotest:kotest-runner-junit5:$versions.kotest"
+                ],
+
+                'turbine'    : [
+                        "app.cash.turbine:turbine:$versions.turbine"
+                ],
+
+                'coroutines' : [
+                        "org.jetbrains.kotlinx:kotlinx-coroutines-test:$versions.coroutines",
+                        "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+                ],
+
+                'mockk'       : [
+                        "io.mockk:mockk:$versions.mockk"
+                ],
+
+                'instrumented': [
+                        "androidx.test.ext:junit:$versions.junit",
+                        "androidx.test.espresso:espresso-core:$versions.espresso"
+                ]
+        ],
+
+        'di'            : [
+                'koin'       : [
+                        "io.insert-koin:koin-android:$versions.koin",
+                        "io.insert-koin:koin-android-compat:$versions.koin",
+                        "io.insert-koin:koin-androidx-workmanager:$versions.koin",
+                        "io.insert-koin:koin-androidx-navigation:$versions.koin"
+                ]
+        ],
+
+        'networking'       : [
+                "com.squareup.retrofit2:retrofit:$versions.retrofit",
+                "com.squareup.retrofit2:converter-gson:$versions.retrofit_gson",
+                "com.squareup.okhttp3:logging-interceptor:$versions.retrofit_logging",
+                "com.google.code.gson:gson:$versions.gson"
+        ],
+
+        'coroutines'       : [
+                "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+        ],
+
+        'core_ktx'       : [
+                "androidx.core:core-ktx:$versions.core_ktx"
+        ],
+
+        'ui'             : [
+                "androidx.appcompat:appcompat:$versions.appcompat",
+                "com.google.android.material:material:$versions.material",
+                "androidx.constraintlayout:constraintlayout:$versions.constrainlayout",
+                "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
+                "androidx.navigation:navigation-ui-ktx:$versions.navigation",
+                "androidx.recyclerview:recyclerview:$versions.recyclerview",
+                "androidx.recyclerview:recyclerview-selection:$versions.recyclerview_selection"
+        ]
+
+]

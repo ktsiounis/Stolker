@@ -1,0 +1,74 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.stolker'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.example.stolker"
+        minSdk 23
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+
+        def localPropertiesFile = rootProject.file("local.properties")
+        def localProperties = new Properties()
+        localProperties.load(new FileInputStream(localPropertiesFile))
+
+        mock {
+            buildConfigField "String", "betaApiAuthToken", localProperties['betaApiAuthToken']
+            buildConfigField "String", "betaRtfAuthToken", localProperties['betaRtfAuthToken']
+
+            buildConfigField "String", "apiBaseUrl", localProperties['mockBaseUrl']
+            buildConfigField "String", "rtfBaseUrl", localProperties['mockBaseUrl']
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        beta {
+            buildConfigField "String", "betaApiAuthToken", localProperties['betaApiAuthToken']
+            buildConfigField "String", "betaRtfAuthToken", localProperties['betaRtfAuthToken']
+
+            buildConfigField "String", "apiBaseUrl", localProperties['betaApiBaseUrl']
+            buildConfigField "String", "rtfBaseUrl", localProperties['betaRtfBaseUrl']
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation deps.module.common
+
+    implementation deps.core_ktx
+    implementation deps.ui
+    implementation deps.networking
+    implementation deps.di.koin
+
+    testImplementation deps.test.junit
+    testImplementation deps.test.mockk
+    testImplementation deps.test.coroutines
+    testImplementation deps.test.turbine
+    testImplementation deps.test.kotest
+    androidTestImplementation deps.test.instrumented
+}

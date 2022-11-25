@@ -1,0 +1,40 @@
+android {
+    compileSdk versions.compileSdk
+
+    defaultConfig {
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled true
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin/"
+        release.java.srcDirs += "src/release/kotlin/"
+        debug.java.srcDirs += "src/debug/kotlin/"
+        test.java.srcDirs += "src/test/kotlin/"
+        androidTest.java.srcDirs += "src/androidTest/kotlin/"
+    }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+        unitTests.includeAndroidResources = true
+    }
+
+    kotlinOptions {
+        allWarningsAsErrors = Boolean.valueOf(findProperty("ALL_WARNINGS_AS_ERRORS") ?: "true")
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+        exclude 'MANIFEST.MF'
+    }
+}
