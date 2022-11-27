@@ -12,8 +12,10 @@ fun Result<BuxProductRaw?>.toProductResult(): Result<Product> {
                     Product(
                         name = this?.displayName ?: "",
                         id = this?.securityId ?: "",
-                        currentPrice = this?.currentPrice?.getFormattedPrice() ?: "",
-                        closingPrice = this?.closingPrice?.getFormattedPrice() ?: ""
+                        currentPrice = this?.currentPrice?.amount?.toFloat() ?: 0f,
+                        closingPrice = this?.closingPrice?.amount?.toFloat() ?: 0f,
+                        currentPriceFormatted = this?.currentPrice?.getFormattedPrice() ?: "",
+                        closingPriceFormatted = this?.closingPrice?.getFormattedPrice() ?: ""
                     )
                 )
             }
@@ -30,8 +32,10 @@ fun Result<List<BuxProductRaw>?>.toProductsResult(): Result<List<Product>> {
                     Product(
                         name = raw.displayName,
                         id = raw.securityId,
-                        currentPrice = raw.currentPrice.getFormattedPrice(),
-                        closingPrice = raw.closingPrice.getFormattedPrice()
+                        currentPrice = raw.currentPrice.amount.toFloat(),
+                        closingPrice = raw.closingPrice.amount.toFloat(),
+                        currentPriceFormatted = raw.currentPrice.getFormattedPrice(),
+                        closingPriceFormatted = raw.closingPrice.getFormattedPrice()
                     )
                 }
             } ?: emptyList()

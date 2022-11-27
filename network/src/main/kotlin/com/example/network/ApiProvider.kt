@@ -17,7 +17,7 @@ open class ApiProvider<API>(
         .addInterceptor {
             val newRequest = it.request()
                 .newBuilder()
-                .addHeader("Authorization", "Bearer " + BuildConfig.betaApiAuthToken)
+                .addHeader("Authorization", "Bearer " + BuildConfig.apiAuthToken)
                 .addHeader("Accept", "application/json")
                 .addHeader("Accept-Language", "nl-NL,en;q=0.8")
                 .build()

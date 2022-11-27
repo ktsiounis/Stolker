@@ -7,8 +7,7 @@ import com.example.common.Result
 import com.example.domain.models.Product
 import com.example.domain.models.SocketMessage
 import com.example.domain.usecases.ProductDetailsUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class MainViewModel(
@@ -18,20 +17,22 @@ class MainViewModel(
     private val _uiState = MutableStateFlow<ProductsUiState>(ProductsUiState.Success(emptyList()))
     val uiState: StateFlow<ProductsUiState> = _uiState
 
+    private val _detailsUiState = MutableStateFlow<ProductDetailsUiState>(ProductDetailsUiState.ProductUpdate(null))
+    val detailsUiState: StateFlow<ProductDetailsUiState> = _detailsUiState
+
+    private val _uiAction = MutableSharedFlow<ProductsUiAction>()
+    val uiAction: SharedFlow<ProductsUiAction> = _uiAction
+
     private val generalErrorMessage = "Something unexpected happen"
 
-    init {
-        getProducts()
-    }
-
-    private fun getProducts() {
+    fun getProducts() {
         viewModelScope.launch {
             productDetailsUseCase
                 .getProducts()
                 .collect {
                     when(it) {
                         is Result.Success ->_uiState.value = ProductsUiState.Success(it.value)
-                        is Result.Error -> _uiState.value = ProductsUiState.Error(it.message ?: generalErrorMessage)
+                        is Result.Error -> _uiState.value = ProductsUiState.NotAvailableProducts
                     }
                 }
         }
@@ -43,7 +44,10 @@ class MainViewModel(
                 .startSocket()
                 .collect {
                     when(it) {
-                        is SocketMessage.ProductUpdate -> Log.d("MainViewModel", it.currentPrice ?: "")
+                        is SocketMessage.ProductUpdate -> {
+                            Log.d("MainViewModel", it.currentPrice ?: "")
+                            _detailsUiState.value = ProductDetailsUiState.ProductUpdate(it.currentPrice)
+                        }
                         SocketMessage.SocketConnected -> {
                             Log.d("MainViewModel", "Connected!")
                             productDetailsUseCase.subscribeTo(productId)
@@ -62,9 +66,31 @@ class MainViewModel(
         }
     }
 
+    fun getProductDetails(productId: String) {
+        viewModelScope.launch {
+            productDetailsUseCase
+                .getProductDetails(productId)
+                .collect {
+                    when(it) {
+                        is Result.Success -> _uiAction.emit(ProductsUiAction.NavigateToProductDetails(it.value))
+                        is Result.Error -> _uiState.value = ProductsUiState.Error(it.message ?: generalErrorMessage)
+                    }
+                }
+        }
+    }
+
 }
 
 sealed interface ProductsUiState {
     data class Success(val products: List<Product>): ProductsUiState
     data class Error(val message: String): ProductsUiState
+    object NotAvailableProducts: ProductsUiState
+}
+
+sealed interface ProductsUiAction {
+    data class NavigateToProductDetails(val product: Product): ProductsUiAction
+}
+
+sealed interface ProductDetailsUiState {
+    data class ProductUpdate(val currentPrice: String?): ProductDetailsUiState
 }

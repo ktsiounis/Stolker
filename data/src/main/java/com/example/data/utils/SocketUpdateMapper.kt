@@ -4,8 +4,8 @@ import com.example.data.socket.SocketMessageRaw
 import com.example.data.socket.SocketUpdateType
 import com.example.domain.models.SocketMessage
 
-fun SocketMessageRaw.toSocketMessage(): SocketMessage {
-    return when(this.type) {
+fun SocketMessageRaw?.toSocketMessage(): SocketMessage {
+    return when(this?.type) {
         SocketUpdateType.PRODUCT -> {
             SocketMessage.ProductUpdate(this.body?.securityId, this.body?.currentPrice)
         }

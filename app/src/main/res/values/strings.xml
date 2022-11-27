@@ -5,4 +5,12 @@
     <string name="product_details_fragment_label">Details</string>
     <string name="no_available_products_message">There are no available products right now. You can try search for a product manually though!</string>
     <string name="search_product_manually_fab_content_description">Search Product Manually</string>
+    <string name="manual_product_search_dialog_title">Search Product</string>
+    <string name="cancel_button_text">Cancel</string>
+    <string name="search_button_text">Search</string>
+    <string name="manual_product_id_edittext_hint">Product Identifier</string>
+    <string name="manual_product_id_textview_text">Insert the identifier for the product you want to see.</string>
+    <string name="previous_closing_price_label">Previous closing price</string>
+    <string name="internet_connection_available">Back Online!</string>
+    <string name="internet_connection_unavailable">No Internet Connection!</string>
 </resources>

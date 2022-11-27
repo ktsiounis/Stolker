@@ -19,10 +19,11 @@ open class WebSocketProvider {
     }
 
     private val client = OkHttpClient.Builder()
+        .retryOnConnectionFailure(true)
         .addInterceptor {
             val newRequest = it.request()
                 .newBuilder()
-                .addHeader("Authorization", "Bearer " + BuildConfig.betaRtfAuthToken)
+                .addHeader("Authorization", "Bearer " + BuildConfig.rtfAuthToken)
                 .addHeader("Accept-Language", "nl-NL,en;q=0.8")
                 .build()
             return@addInterceptor it.proceed(newRequest)
@@ -31,10 +32,12 @@ open class WebSocketProvider {
         .build()
 
     fun startSocket(): Channel<SocketUpdate> =
-        with(BuxWebSocketListener()) {
-            startSocket(this)
-            this@with.socketEventChannel
-        }
+        if (_webSocket == null) {
+            with(BuxWebSocketListener()) {
+                startSocket(this)
+                this@with.socketEventChannel
+            }
+        } else _webSocketListener!!.socketEventChannel
 
     private fun startSocket(webSocketListener: BuxWebSocketListener) {
         _webSocketListener = webSocketListener
@@ -42,7 +45,6 @@ open class WebSocketProvider {
             Request.Builder().url(BASE_URL).build(),
             webSocketListener
         )
-        client.dispatcher.executorService.shutdown()
     }
 
     fun stopSocket() {

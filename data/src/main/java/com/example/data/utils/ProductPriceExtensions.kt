@@ -9,6 +9,6 @@ fun ProductPrice?.getFormattedPrice(): String {
         val currencySymbol = currency.getSymbol(Locale.getDefault())
         val formattedAmount = String.format("%.${this.decimals}f", this.amount.toFloat())
 
-        return "$formattedAmount $currencySymbol"
+        return "$formattedAmount$currencySymbol"
     } ?: return ""
 }

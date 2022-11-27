@@ -1,1 +1,6 @@
-<manifest package="com.example.network"/>
+<manifest package="com.example.network"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+</manifest>
