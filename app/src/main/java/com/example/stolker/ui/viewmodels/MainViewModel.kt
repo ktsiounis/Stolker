@@ -73,7 +73,9 @@ class MainViewModel(
                 .collect {
                     when(it) {
                         is Result.Success -> _uiAction.emit(ProductsUiAction.NavigateToProductDetails(it.value))
-                        is Result.Error -> _uiState.value = ProductsUiState.Error(it.message ?: generalErrorMessage)
+                        is Result.Error -> _uiState.value = ProductsUiState.Error(
+                            if (!it.message.isNullOrBlank()) it.message!! else generalErrorMessage
+                        )
                     }
                 }
         }

@@ -63,7 +63,9 @@ android {
         unitTests.all {
             useJUnitPlatform()
         }
+        animationsDisabled = true
     }
+    testBuildType "beta"
 }
 
 dependencies {

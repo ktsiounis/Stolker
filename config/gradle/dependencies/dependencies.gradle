@@ -31,7 +31,8 @@ ext.deps = [
 
                 'instrumented': [
                         "androidx.test.ext:junit:$versions.junit",
-                        "androidx.test.espresso:espresso-core:$versions.espresso"
+                        "androidx.test.espresso:espresso-core:$versions.espresso",
+                        "androidx.test.espresso:espresso-contrib:$versions.espresso_contrib"
                 ]
         ],
 
