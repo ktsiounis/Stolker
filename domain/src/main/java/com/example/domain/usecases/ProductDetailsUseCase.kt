@@ -2,6 +2,7 @@ package com.example.domain.usecases
 
 import com.example.domain.contracts.BuxRestRepositoryContract
 import com.example.domain.contracts.BuxWebSocketRepositoryContract
+import kotlinx.coroutines.CoroutineScope
 
 class ProductDetailsUseCase(
     private val restRepository: BuxRestRepositoryContract,
@@ -12,7 +13,7 @@ class ProductDetailsUseCase(
 
     suspend fun getProductDetails(id: String) = restRepository.getProductDetails(id)
 
-    suspend fun startSocket() = webSocketRepository.startSocket()
+    suspend fun startSocket(scope: CoroutineScope) = webSocketRepository.startSocket(scope)
 
     fun closeSocket() = webSocketRepository.closeSocket()
 

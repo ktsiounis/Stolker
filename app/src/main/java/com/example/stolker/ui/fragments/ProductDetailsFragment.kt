@@ -19,7 +19,6 @@ import com.example.stolker.ui.viewmodels.ProductDetailsUiState
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.skip
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -48,10 +47,10 @@ class ProductDetailsFragment : Fragment() {
         product?.let { product ->
 
             renderProduct(product)
-            viewModel.startSocketForProduct(product.id)
 
             viewLifecycleOwner.lifecycleScope.launch {
                 repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                    viewModel.startSocketForProduct(product.id)
                     context
                         ?.observeConnectivity()
                         ?.drop(1)

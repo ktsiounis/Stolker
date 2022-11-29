@@ -1,30 +1,28 @@
 package com.example.network.utils
 
 import android.util.Log
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 
-@OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
-class BuxWebSocketListener : WebSocketListener() {
+class BuxWebSocketListener(private val scope: CoroutineScope) : WebSocketListener() {
 
-    val socketEventChannel: Channel<SocketUpdate> = Channel(10)
+    private val _socketEventFlow = MutableSharedFlow<SocketUpdate>()
+    val socketEventFlow: SharedFlow<SocketUpdate> = _socketEventFlow.asSharedFlow()
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d("BuxWebSocketListener", response.message)
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        GlobalScope.launch {
+        scope.launch {
             Log.d("BuxWebSocketListener", text)
-            if (!socketEventChannel.isClosedForSend) {
-                socketEventChannel.send(SocketUpdate(text))
-            }
+            _socketEventFlow.emit(SocketUpdate(text))
         }
     }
 
@@ -33,11 +31,9 @@ class BuxWebSocketListener : WebSocketListener() {
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        GlobalScope.launch {
+        scope.launch {
             Log.d("BuxWebSocketListener", "Socket failure: ${t.message} - ${response?.message}")
-            if (!socketEventChannel.isClosedForSend) {
-                socketEventChannel.send(SocketUpdate(text = response?.message))
-            }
+            _socketEventFlow.emit(SocketUpdate(text = response?.message))
         }
     }
 

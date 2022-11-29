@@ -2,7 +2,8 @@ package com.example.network
 
 import com.example.network.utils.BuxWebSocketListener
 import com.example.network.utils.SocketUpdate
-import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharedFlow
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -31,13 +32,13 @@ open class WebSocketProvider {
         .addInterceptor(HttpLoggingInterceptor().also { it.setLevel(HttpLoggingInterceptor.Level.BODY) })
         .build()
 
-    fun startSocket(): Channel<SocketUpdate> =
+    fun startSocket(scope: CoroutineScope): SharedFlow<SocketUpdate> =
         if (_webSocket == null) {
-            with(BuxWebSocketListener()) {
+            with(BuxWebSocketListener(scope)) {
                 startSocket(this)
-                this@with.socketEventChannel
+                this@with.socketEventFlow
             }
-        } else _webSocketListener!!.socketEventChannel
+        } else _webSocketListener!!.socketEventFlow
 
     private fun startSocket(webSocketListener: BuxWebSocketListener) {
         _webSocketListener = webSocketListener
@@ -51,7 +52,6 @@ open class WebSocketProvider {
         try {
             _webSocket?.close(NORMAL_CLOSURE_STATUS, null)
             _webSocket = null
-            _webSocketListener?.socketEventChannel?.close()
             _webSocketListener = null
         } catch (ex: Exception) {
         }

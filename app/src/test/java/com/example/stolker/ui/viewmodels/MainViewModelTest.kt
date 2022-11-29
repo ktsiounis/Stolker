@@ -3,8 +3,6 @@ package com.example.stolker.ui.viewmodels
 import android.util.Log
 import app.cash.turbine.test
 import com.example.common.Result
-import com.example.data.api.BuxProductRaw
-import com.example.data.api.ProductPrice
 import com.example.domain.models.Product
 import com.example.domain.models.SocketMessage
 import com.example.domain.usecases.ProductDetailsUseCase
@@ -102,7 +100,7 @@ internal class MainViewModelTest {
     fun `when start socket for a product, and socket is connected successfully, useCase subscribes to product updates`() =
         runTestWithDispatcher {
             mockkStatic(Log::class)
-            coEvery { useCaseMock.startSocket() } returns flowOf(SocketMessage.SocketConnected)
+            coEvery { useCaseMock.startSocket(any()) } returns flowOf(SocketMessage.SocketConnected)
             every { Log.d(any(), any()) } returns 0
 
             vmUnderTest.startSocketForProduct(product.id)
@@ -115,7 +113,7 @@ internal class MainViewModelTest {
         runTestWithDispatcher {
             vmUnderTest.detailsUiState.test {
                 mockkStatic(Log::class)
-                coEvery { useCaseMock.startSocket() } returns flowOf(SocketMessage.ProductUpdate(product.id, "2"))
+                coEvery { useCaseMock.startSocket(any()) } returns flowOf(SocketMessage.ProductUpdate(product.id, "2"))
                 every { Log.d(any(), any()) } returns 0
 
                 vmUnderTest.startSocketForProduct(product.id)

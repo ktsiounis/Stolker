@@ -6,8 +6,8 @@ import com.example.domain.contracts.BuxWebSocketRepositoryContract
 import com.example.domain.models.SocketMessage
 import com.example.network.WebSocketProvider
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.map
 
 class BuxWebSocketRepository(
@@ -15,8 +15,8 @@ class BuxWebSocketRepository(
     private val gson: Gson
 ): BuxWebSocketRepositoryContract {
 
-    override suspend fun startSocket(): Flow<SocketMessage> {
-        return webSocketProvider.startSocket().consumeAsFlow().map {
+    override suspend fun startSocket(scope: CoroutineScope): Flow<SocketMessage> {
+        return webSocketProvider.startSocket(scope).map {
             val messageRaw = gson.fromJson(it.text, SocketMessageRaw::class.java)
             messageRaw.toSocketMessage()
         }

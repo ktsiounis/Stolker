@@ -41,7 +41,7 @@ class MainViewModel(
     fun startSocketForProduct(productId: String) {
         viewModelScope.launch {
             productDetailsUseCase
-                .startSocket()
+                .startSocket(this)
                 .collect {
                     when(it) {
                         is SocketMessage.ProductUpdate -> {

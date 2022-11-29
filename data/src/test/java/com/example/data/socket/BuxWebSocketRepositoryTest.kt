@@ -20,9 +20,9 @@ internal class BuxWebSocketRepositoryTest {
 
     @Test
     fun `when startSocket is called, provider starts the socket`() = runTestWithDispatcher {
-        repoUnderTest.startSocket()
+        repoUnderTest.startSocket(this)
 
-        verify(exactly = 1) { providerMock.startSocket() }
+        verify(exactly = 1) { providerMock.startSocket(any()) }
     }
 
     @Test
