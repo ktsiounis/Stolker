@@ -19,9 +19,9 @@ _**:bulb:Important:** In order to be able to run the app on your own workstation
 
 ## Videos :video_camera:
 
-| Select Product from the list | Search for a product |
-| --- | --- |
-| <video width="240" height="500" controls> <source src="/screenrecordings/product_search_and_details.webm" type="video/webm"></video> | <video width="240" height="500" controls> <source src="/select_product_from_the_list.webm" type="video/webm"></video> |
+[select_product_from_the_list.webm](https://user-images.githubusercontent.com/10981693/204795462-a3842b4e-e529-4ded-8452-004de810cbfa.webm) 
+
+[product_search_and_details.webm](https://user-images.githubusercontent.com/10981693/204796362-23f76c50-b70b-4268-a77c-4bce550b1548.webm)
 
 ## Testing :test_tube:
 
